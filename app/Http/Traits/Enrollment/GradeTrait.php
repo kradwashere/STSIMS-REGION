@@ -44,7 +44,9 @@ trait GradeTrait {
         $data = ScholarEnrollment::where('id',$enrollment_id)->first();
         if($count == 0){
             $data->is_clear = 1;
-            $p = Enrollee::where('scholar_id',$scholar_id)->where('school_semester_id',$semester_id)->update(['is_grades_completed' => 1]);
+            $p = ScholarEnrollmentInfo::whereHas('enrollment',function ($query) use ($enrollment_id){
+                $query->where('enrollment_id',$enrollment_id);
+            })->update(['is_grades_completed' => 1]);
         }else{ 
             $data->is_clear = 0;
         }
@@ -107,13 +109,16 @@ trait GradeTrait {
     }
 
     public function lockGrade($request){
-        $data = ScholarEnrollment::where('id',$request->id)->first();
+        $enrollment_id = $request->id;
+        $data = ScholarEnrollment::where('id',$enrollment_id)->first();
         $data->update($request->except('editable'));
         if($data->is_clear){
             $scholar_id =  $data->scholar_id;
             $semester_id =  $data->semester_id;
 
-            $p = Enrollee::where('scholar_id',$scholar_id)->where('school_semester_id',$semester_id)->update(['is_grades_completed' => 1]);
+            $p = ScholarEnrollmentInfo::whereHas('enrollment',function ($query) use ($enrollment_id){
+                $query->where('enrollment_id',$enrollment_id);
+            })->update(['is_grades_completed' => 1]);
 
             $p = ScholarEducation::with('subcourse')->where('scholar_id',$scholar_id)->first();
             $years = $p->subcourse->years; 

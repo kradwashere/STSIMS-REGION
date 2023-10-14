@@ -165,7 +165,7 @@
                     </div>
                 </div>
             </li>
-            <li>
+            <li @click="openMissed(counts.missed)">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
                         <div class="avatar-xs">
@@ -194,7 +194,7 @@
                     </div>
                 </div>
             </li>
-             <li @click="termination(scholarsTermination)"> 
+             <li @click="openTermination(scholarsTermination)"> 
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
                         <div class="avatar-xs">
@@ -225,12 +225,14 @@
             </li>
         </ul>
     </div>
-    <Termination ref="termination" />
+    <Termination ref="termination"/>
+    <Missed ref="missed"/>
 </template>
 <script>
+import Missed from './Modals/Sub/Missed.vue';
 import Termination from './Modals/Sub/Termination.vue';
 export default {
-    components : { Termination },
+    components : { Termination, Missed },
     props: ['semester_year'],
     data(){
         return {
@@ -274,9 +276,14 @@ export default {
             })
             .catch(err => console.log(err));
         },
-        termination(data){
+        openTermination(data){
             if(data.length > 0){
                 this.$refs.termination.show(data);
+            }
+        },
+        openMissed(data){
+            if(data.length > 0){
+                this.$refs.missed.show(data);
             }
         }
     }

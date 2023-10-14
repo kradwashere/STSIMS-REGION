@@ -11,13 +11,13 @@ class ListResource extends JsonResource
         return [
             'attachment' => json_decode($this->attachment,true),
             'grades' => $this->lists,
-            'benefits' => $this->semester->benefits,
-            'level' => $this->level,
-            'semester' => $this->semester->semester,
-            'status' => $this->enrollee,
-            'academic_year' => $this->semester->academic_year,
-            'start_at' => $this->semester->start_at,
-            'end_at' => $this->semester->end_at,
+            'benefits' => $this->benefits,
+            'level' => $this->level->others,
+            'semester' => $this->semester,
+            'status' => $this->info,
+            // 'academic_year' => $this->semester->academic_year,
+            // 'start_at' => $this->semester->start_at,
+            // 'end_at' => $this->semester->end_at,
         ];
     }
 }

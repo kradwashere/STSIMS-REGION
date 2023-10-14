@@ -3,6 +3,9 @@
         <div class="input-group mb-3 mt-n1">
             <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
             <input type="text" v-model="keyword" placeholder="Search Academic Year" class="form-control" style="width: 30%;">
+            <span @click="newGroupModal()" class="input-group-text" v-b-tooltip.hover title="Group Semester" style="cursor: pointer;"> 
+                <i class="ri-list-unordered search-icon"></i>
+            </span>
             <b-button type="button" variant="primary" @click="newModal()">
                 <i class="ri-add-circle-fill align-bottom me-1"></i> Create
             </b-button>
@@ -31,7 +34,7 @@
                         <span v-else class="badge bg-danger">Inactive</span>
                     </td>
                     <td class="text-end">
-                        <b-button variant="soft-primary" v-b-tooltip.hover title="Edit" size="sm" class="edit-list"><i class="ri-pencil-fill align-bottom"></i> </b-button>
+                        <b-button variant="soft-primary" v-b-tooltip.hover title="Edit" size="sm" class="edit-list">Set as active</b-button>
                     </td>
                 </tr>
             </tbody>
@@ -39,12 +42,14 @@
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>          
     <Semester :semesters="semesters" @status="message" ref="new"/>
+    <SemesterGroup ref="group"/>
 </template>
 <script>
 import Pagination from "@/Shared/Components/Pagination.vue";
 import Semester from '../Modals/Semester.vue';
+import SemesterGroup from '../Modals/SemesterGroup.vue';
 export default {
-    components: { Semester, Pagination },
+    components: { Semester, SemesterGroup, Pagination },
     props: ['dropdowns','id','term'],
     data(){
         return{
@@ -93,6 +98,9 @@ export default {
         },
         newModal(){
             this.$refs.new.show(this.id);
+        },
+        newGroupModal(){
+            this.$refs.group.show(this.id);
         },
         message(){
             this.fetch();

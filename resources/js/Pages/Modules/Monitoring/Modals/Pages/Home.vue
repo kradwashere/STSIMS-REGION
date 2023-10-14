@@ -18,8 +18,8 @@
         <tbody>
             <tr class="font-size-11" v-for="(list,index) in enrollments" v-bind:key="index">
                 <td class="text-center">{{index+1}}</td>
-                <td class="fs-12">{{list.academic_year}} <span class="text-muted">| {{list.semester.name}}</span></td>
-                <td class="text-center fs-12">{{list.level.others}}</td>
+                <td class="fs-12">{{list.semester.academic_year}} <span class="text-muted">| {{list.semester.semester.name}}</span></td>
+                <td class="text-center fs-12">{{list.level}}</td>
                 <td class="text-center fs-12">{{check(list.grades)}}</td>
                 <td class="text-center fs-12">{{check3(list.grades)}}</td>
                 <!-- <td class="text-center">
@@ -35,7 +35,7 @@
                     <button @click="viewGrades(list)" class="btn btn-sm btn-label me-1" :class="(list.status.is_grades_completed == 1) ? 'btn-success' : 'btn-light' " type="button">
                         <div class="btn-content"><i class="ri-list-check label-icon align-middle fs-12 me-2"></i>View Grades</div>
                     </button>
-                    <button @click="viewBenefits(list.benefits)" class="btn btn-sm btn-label" :class="(list.status.is_benefits_released == 1) ? 'btn-success' : 'btn-light' " type="button">
+                    <button @click="viewBenefits(list)" class="btn btn-sm btn-label" :class="(list.status.is_benefits_released == 1) ? 'btn-success' : 'btn-light' " type="button">
                         <div class="btn-content"><i class="ri-eye-line label-icon align-middle fs-12 me-2"></i>View Benefits</div>
                     </button>
                 </td>

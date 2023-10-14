@@ -2,9 +2,8 @@
     <b-modal v-model="showModal" title="Create Semester" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
         <b-form class="customform mb-2">
             <div class="row customerform">
-                <div class="col-md-6">
-                    <label>Year From: {{ type }}
-                        <span v-if="form.errors" v-text="form.errors.academic_year" class="haveerror"></span>
+                <div class="col-md-6 mt-n1">
+                    <label>Year From: {{ type }}<span v-if="form.errors" v-text="form.errors.academic_year" class="haveerror"></span>
                     </label>
                     <date-picker
                         v-model:value="semester.from"

@@ -189,43 +189,8 @@ export default {
                 }
             })
             .then(response => {
-                this.enrollments = response.data.data.enrollments;
-                // this.$refs.enrollment.set(this.monitoring.enrollments);
-                // this.$refs.benefits.set(this.monitoring.enrollments);
+                this.enrollments = response.data.data;
                 this.$refs.home.set(this.enrollments);
-                // console.log(response);
-                // this.monitoring = response.data.data;
-
-                // this.prospectuses.map((list) => {
-                //     list.semesters.map((semester) => {
-                //         var a = [];
-                //         var a = this.monitoring.enrollments.map((enrollment) => {
-                //            return (semester.semester == enrollment.semester.semester.name) ? (list.year_level == enrollment.level.others) ? true : false : false;
-                //         });
-
-                //         const count = a.filter(Boolean).length;
-                //         (count > 0) ? this.listE.push(true) : this.listE.push(false);
-                //         semester['is_enrolled'] = ((count > 0) ? true : false);
-
-                //         var count1 = 0; var total = 0;
-                //         this.monitoring.enrollments.map((enrollment) => {
-                //             if (semester.semester == enrollment.semester.semester.name) {
-                //                 if (list.year_level == enrollment.level.others) {
-                //                     enrollment.semester.benefits.map((benefit) => {
-                //                         if (1 == benefit.benefit_id) {
-                //                             count1++;
-                //                         }
-                //                         total = parseInt(total) + parseInt(benefit.amount);
-                //                     });
-                //                 }
-                //             }
-                //             semester['benefit_counter'] = (enrollment.semester.semester.others == 'regular') ? 5 : 2;
-                //         });
-                //         semester['benefit_count'] = count1;
-                //         semester['benefit_total'] = total;                    
-                //     });
-                // });
-                
             })
             .catch(err => console.log(err));
         },

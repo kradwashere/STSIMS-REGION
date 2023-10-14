@@ -1,54 +1,14 @@
 <template>
     <b-modal v-model="showModal" title="Grades" style="--vz-modal-width: 60%;" hide-footer header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered>    
          <b-form class="customform mb-2">
-            <b-row class="mt-2 mb-2">
-                <b-col lg="4">
-                    <div class="p-2 border border-dashed rounded">
-                        <div class="d-flex align-items-center">
-                            <div class="avatar-sm me-2">
-                                <div class="avatar-title rounded bg-transparent text-success fs-24">
-                                    <i class="ri-calendar-line"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1">
-                                <p class="text-muted mb-1">Academic Year :</p>
-                                <h6 class="mb-0">{{ enrollment.academic_year }}</h6>
-                            </div>
-                        </div>
-                    </div>
-                </b-col>
-                <b-col lg="4">
-                    <div class="p-2 border border-dashed rounded">
-                        <div class="d-flex align-items-center">
-                            <div class="avatar-sm me-2">
-                                <div class="avatar-title rounded bg-transparent text-success fs-24">
-                                    <i class="ri-calendar-todo-line"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1">
-                                <p class="text-muted mb-1">Semester :</p>
-                                <h6 class="mb-0">{{ enrollment.semester.name }}</h6>
-                            </div>
-                        </div>
-                    </div>
-                </b-col>
-                <b-col lg="4">
-                    <div class="p-2 border border-dashed rounded">
-                        <div class="d-flex align-items-center">
-                            <div class="avatar-sm me-2">
-                                <div class="avatar-title rounded bg-transparent text-success fs-24">
-                                    <i class="ri-archive-line"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1">
-                                <p class="text-muted mb-1">Level :</p>
-                                <h6 class="mb-0">{{ enrollment.level.name }}</h6>
-                            </div>
-                        </div>
-                    </div>
-                </b-col>
-            </b-row>
             <div class="row">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb p-3 py-2 bg-light mb-0">
+                        <li class="breadcrumb-item">{{enrollment.semester.academic_year}}</li>
+                        <li class="breadcrumb-item active" aria-current="page"> {{enrollment.semester.semester.name}} </li>
+                         <li class="breadcrumb-item active" aria-current="page"> {{enrollment.level}} </li>
+                    </ol>
+                </nav>
                 <div class="col-md-12">
                     <hr class="text-muted"/>
                     <div class="table-responsive" style="height: calc(100vh - 600px);">
@@ -156,7 +116,7 @@
                 currentUrl: window.location.origin,
                 showModal: false,
                 enrollment: {
-                    semester: {},
+                    semester: { semester: {}},
                     level: {},
                     grades: [],
                     attachment: {

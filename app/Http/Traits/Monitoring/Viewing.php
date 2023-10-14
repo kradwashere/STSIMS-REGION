@@ -3,12 +3,13 @@
 namespace App\Http\Traits\Monitoring;
 
 use App\Models\Scholar;
+use App\Models\ScholarEnrollment;
 use App\Models\ScholarAddress;
 use App\Models\ScholarEducation;
 use App\Models\ScholarProfile;
 use App\Http\Resources\Scholar\SearchResource;
 use App\Http\Resources\Scholar\IndexResource;
-use App\Http\Resources\Scholar\Info\ViewResource;
+use App\Http\Resources\Scholar\Info\ListResource;
 
 trait Viewing { 
     
@@ -66,22 +67,49 @@ trait Viewing {
     public function monitoring($request){
         $id = $request->id;
 
-        $data = Scholar::
+        // $data = Scholar::
         // with('benefits.benefit')
-        select('id')->
-        with('enrollments.semester.semester')
-        ->with('enrollments.semester.benefits.benefit:id,name,short','enrollments.semester.benefits.status:id,name,color')
-        ->with('enrollments.level')->with('enrollments.lists')
-        ->with('enrollments.enrollee')
+        // select('id')->
+        // with('enrollments.semester.semester')
+        // ->with('enrollments.semester.benefits.benefit:id,name,short','enrollments.semester.benefits.status:id,name,color')
+        // ->with('enrollments.level')->with('enrollments.lists')
+        // ->with('enrollments.enrollee')
         // ->withWhereHas('benefits', function ($query) {
         //     $query->where('status_id',13);
         // })
-        ->withWhereHas('enrollments.semester.benefits', function ($query) use ($id) {
-            $query->where('scholar_id',$id);
-        })
-        ->where('id',$id)
-        ->first();
+        // ->withWhereHas('enrollments.semester.benefits', function ($query) use ($id) {
+        //     $query->where('scholar_id',$id);
+        // })
+        // ->where('id',$id)
+        // ->first();
 
-       return new ViewResource($data);
+
+        $data = ScholarEnrollment::select('id','scholar_id','semester_id','level_id','attachment')
+        ->withWhereHas('semester', function ($query) {
+            $query->select('id','academic_year','semester_id','start_at','end_at')
+            ->withWhereHas('semester', function ($query) {
+                $query->select('id','name');
+            });
+        })
+        ->withWhereHas('level', function ($query) {
+            $query->select('id','name','others');
+        })
+        ->withWhereHas('lists', function ($query){
+            $query->select('id','enrollment_id','code','subject','unit','grade');
+        })
+        ->withWhereHas('benefits', function ($query){
+            $query->select('id','enrollment_id','amount','month','benefit_id','status_id')
+            ->withWhereHas('benefit', function ($query){
+                $query->select('id','name','type','short','regular_amount','summer_amount');
+            })
+            ->withWhereHas('status', function ($query){
+                $query->select('id','name','color','others');
+            });
+        })
+        ->with('info')
+        ->where('scholar_id',$id)
+        ->get();
+
+       return ListResource::collection($data);
     }   
 }

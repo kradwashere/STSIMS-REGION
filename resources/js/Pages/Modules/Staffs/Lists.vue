@@ -34,7 +34,7 @@
                 <tr v-for="(list,index) in lists" v-bind:key="index" :class="[(list.is_active == 0) ? 'table-warnings' : '']">
                     <td>
                         <div class="avatar-xs chat-user-img online">
-                            <span v-if="list.avatar == 'avatar.jpg'" :class="'avatar-title rounded-circle bg-primary text-white'">{{list.lastname[0]}}</span>
+                            <span v-if="list.avatar == 'avatar.jpg'" :class="'avatar-title rounded-circle bg-primary text-white'">{{list.profile.lastname[0]}}</span>
                             <img v-else :src="currentUrl+'/images/avatars/'+list.avatar" alt="" class="avatar-xs rounded-circle">
                             <span v-if="list.is_active" class="user-status text-success"></span>
                         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Scholar\Info;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Scholar\Info\ListResource;
 
 class ViewResource extends JsonResource
 {

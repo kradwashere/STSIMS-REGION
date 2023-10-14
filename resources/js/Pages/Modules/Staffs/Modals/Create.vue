@@ -250,6 +250,8 @@ export default {
         },
         hide(){
             this.form = {};
+            this.user = {};
+            this.profile = {};
             this.showModal = false;
             this.editable = false;
         },
