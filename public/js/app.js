@@ -22100,7 +22100,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.showModal = $event;
     }),
-    title: "Termination",
+    title: "Missed Enrollment",
     "hide-footer": $data.viewScholar ? false : true,
     style: {
       "--vz-modal-width": "700px"
