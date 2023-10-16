@@ -29,14 +29,9 @@ class SchoolSemester extends Model
         return $this->belongsTo('App\Models\ListDropdown', 'semester_id', 'id');
     }
 
-    public function benefits()
+    public function enrollments()
     {
-        return $this->hasMany('App\Models\ScholarBenefit', 'school_semester_id');
-    } 
-
-    public function enrollees()
-    {
-        return $this->hasMany('App\Models\Enrollee', 'school_semester_id');
+        return $this->hasMany('App\Models\ScholarEnrollment', 'semester_id');
     } 
 
     // public function getStartAtAttribute($value)

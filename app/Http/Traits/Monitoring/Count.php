@@ -105,42 +105,104 @@ trait Count {
     }
 
     public static function missed($request){
-        $data = Scholar::whereHas('status',function ($query){
+        // $data = Scholar::whereHas('status',function ($query){
+        //     $query->where('type','ongoing');
+        // })->min('awarded_year');
+        // ->whereNotIn('id', function ($query) {
+        //     $query->select('scholar_id')
+        //         ->from('scholar_enrollments');
+        // })
+        // ->whereHas('education',function ($query){
+        //     $query->whereHas('school',function ($query){
+        //         $query->whereHas('semesters',function ($query){
+        //             $query->where('is_active',0);
+        //         });
+        //     });
+        // })
+        // ->pluck('id');
+
+        $year = Scholar::whereHas('status',function ($query){
+            $query->where('type','ongoing');
+        })->min('awarded_year');
+
+        $semesters = SchoolSemester::where('year','>=',$year)->pluck('id');
+
+        $scholars = Scholar::select('id','spas_id','awarded_year')->with('profile:id,scholar_id,firstname,lastname,middlename')
+        ->whereHas('status',function ($query){
             $query->where('type','ongoing');
         })
-        ->whereNotIn('id', function ($query) {
-            $query->select('scholar_id')
-                ->from('scholar_enrollments');
-        })
-        ->whereHas('education',function ($query){
-            $query->whereHas('school',function ($query){
-                $query->whereHas('semesters',function ($query){
+        ->withWhereHas('education',function ($query){
+            $query->select('id','scholar_id','school_id')
+            ->withWhereHas('school',function ($query){
+                $query->select('id')
+                ->withWhereHas('semesters',function ($query){
                     $query->where('is_active',0);
-                });
+                }, '>', 0);
             });
         })
-        ->pluck('id');
+        ->whereHas('enrollments',function ($query) use ($semesters){ 
+            $query->whereHas('semester',function ($query) use ($semesters){
+                $query->whereIn('id',$semesters)->where('is_active',0);
+            });
+        })->withCount('enrollments as e')
+        // ->whereDoesntHave('enrollments', function ($query) {
+        //     $query->whereHas('semester',function ($query){
+        //         $query->where('is_active',0);
+        //     });
+        // })
+        ->get();
 
-        $scholars = Scholar::with('profile:id,scholar_id,firstname,lastname,middlename')->whereIn('id',$data)->get();
+        return $scholars;
+
+        // $data = Scholar::whereHas('status',function ($query){
+        //     $query->where('type','ongoing');
+        // })->whereDoesntHave('enrollments', function ($query) {
+        //     $query->whereHas('semester',function ($query){
+        //         $query->where('is_active',0);
+        //     });
+        // })->whereHas('education',function ($query){
+        //     $query->whereHas('school',function ($query){
+        //         $query->whereHas('semesters',function ($query){
+        //             $query->where('is_active',0);
+        //         });
+        //     });
+        // })->pluck('id');
+        
+
+        // $scholars = Scholar::with('profile:id,scholar_id,firstname,lastname,middlename')->whereIn('id',$data)->get();
         return MonitoringResource::collection($scholars);
     }
 
     public static function unenrolled($request){
+        // $data = Scholar::whereHas('status',function ($query){
+        //     $query->where('type','ongoing');
+        // })
+        // ->whereNotIn('id', function ($query) {
+        //     $query->select('scholar_id')
+        //         ->from('scholar_enrollments');
+        // })
+        // ->whereHas('education',function ($query){
+        //     $query->whereHas('school',function ($query){
+        //         $query->whereHas('semesters',function ($query){
+        //             $query->where('is_active',1);
+        //         });
+        //     });
+        // })
+        // ->pluck('id');
+
         $data = Scholar::whereHas('status',function ($query){
             $query->where('type','ongoing');
-        })
-        ->whereNotIn('id', function ($query) {
-            $query->select('scholar_id')
-                ->from('scholar_enrollments');
-        })
-        ->whereHas('education',function ($query){
+        })->whereDoesntHave('enrollments', function ($query) {
+            $query->whereHas('semester',function ($query){
+                $query->where('is_active',1);
+            });
+        })->whereHas('education',function ($query){
             $query->whereHas('school',function ($query){
                 $query->whereHas('semesters',function ($query){
                     $query->where('is_active',1);
                 });
             });
-        })
-        ->pluck('id');
+        })->pluck('id');
 
         $scholars = Scholar::with('profile:id,scholar_id,firstname,lastname,middlename')->whereIn('id',$data)->get();
         return MonitoringResource::collection($scholars);
@@ -230,5 +292,25 @@ trait Count {
         return $data;
     }
 
+    public function getSemester($id,$year){
+    
+        $data = Scholar::where('id',$id)
+        ->withWhereHas('education', function ($query) use ($id,$year){
+            $query->select('id','scholar_id','school_id')
+            ->withWhereHas('school', function ($query) use ($id,$year){
+                $query->select('id')
+                ->withWhereHas('semesters', function ($query) use ($id,$year){
+                    $query->where('year','>=',$year)->where('is_active',0)
+                    ->whereDoesntHave('enrollments', function ($query) use ($id){
+                        $query->where('scholar_id', $id);
+                    });
+                });
+            });
+        })
+        ->get();
+        // ->toSql();
+        // dd($data);
+        return $data;
+    }
     
 }

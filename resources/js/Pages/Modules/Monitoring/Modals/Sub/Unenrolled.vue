@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="showModal" title="Missed Enrollment" :hide-footer="(viewScholar) ? false : true " style="--vz-modal-width: 700px;" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered>    
+    <b-modal v-model="showModal" title="Unenrolled Scholars" :hide-footer="(viewScholar) ? false : true " style="--vz-modal-width: 700px;" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered>    
         <template v-if="viewScholar == false">
             <input class="form-control mb-3" v-model="keyword" v-if="scholars != 0" type="text" placeholder="Search Scholar">
             <hr class="text-muted"/>
@@ -8,8 +8,7 @@
                     <thead class="table-light">
                         <tr class="fs-11">
                             <th width="7%" class="text-center">#</th>
-                            <th width="73%">Name</th>
-                            <th width="15%" class="text-center">Awarded Year</th>
+                            <th width="88%">Name</th>
                             <th width="5%" class="text-center"></th>
                         </tr>
                     </thead>
@@ -17,10 +16,9 @@
                         <tr v-for="(list,index) in filteredArray" v-bind:key="list.id" class="fs-11">
                             <td class="text-center">{{countPage + index}}</td>
                             <td>
-                                <h5 class="fs-12 mb-0 text-dark">{{ list.firstname }} {{ list.lastname }}</h5>
+                                <h5 class="fs-11 mb-0 text-dark">{{ list.firstname }} {{ list.lastname }}</h5>
                                 <p class="text-muted fs-11 mb-n1">{{ list.spas_id }}</p>
                             </td>
-                            <td class="text-center">{{list.awarded_year}}</td>
                             <td class="text-center">
                                 <b-button @click="view(list)" variant="soft-primary" v-b-tooltip.hover title="Create Scholar Account" size="sm" class="edit-list"><i class="ri-user-add-fill align-bottom"></i> </b-button>
                             </td>
@@ -30,10 +28,9 @@
                         <tr v-for="(list,index) in paginatedData" v-bind:key="list.id" class="fs-11">
                             <td class="text-center">{{countPage + index}}</td>
                             <td>
-                                <h5 class="fs-12 mb-0 text-dark">{{ list.firstname }} {{ list.lastname }}</h5>
+                                <h5 class="fs-11 mb-0 text-dark">{{ list.firstname }} {{ list.lastname }}</h5>
                                 <p class="text-muted fs-11 mb-n1">{{ list.spas_id }}</p>
                             </td>
-                            <td class="text-center">{{list.awarded_year}}</td>
                             <td class="text-center">
                                 <b-button @click="view(list)" variant="soft-primary" v-b-tooltip.hover title="View" size="sm" class="edit-list"><i class="ri-eye-fill align-bottom"></i> </b-button>
                             </td>

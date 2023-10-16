@@ -11,6 +11,7 @@ class MonitoringResource extends JsonResource
         return [
             'id' => $this->id,
             'spas_id' => $this->spas_id,
+            'awarded_year' => $this->awarded_year,
             'firstname' => ucwords(strtolower($this->profile->firstname)),
             'middlename' => ucwords(strtolower($this->profile->middlename)),
             'lastname' => ucwords(strtolower($this->profile->lastname)),

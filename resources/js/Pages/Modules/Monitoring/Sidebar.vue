@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </li>   
-            <li>
+            <li @click="openLacking(scholarsGrades)">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
                         <div class="avatar-xs">
@@ -136,7 +136,7 @@
                     </div>
                 </div>
             </li>
-            <li>
+            <li @click="openUnenrolled(scholarsUnenrolled)">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
                         <div class="avatar-xs">
@@ -147,7 +147,7 @@
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h5 class="mb-0 fs-13">Unenrolled Scholars</h5>
-                        <p class="mb-0 fs-12 text-muted">No enrolled in current active semester</p>
+                        <p class="mb-0 fs-12 text-muted">Schools with active semester</p>
                     </div>
                     <div class="avatar-group">
                         <div class="avatar-group-item" v-for="user in scholarsUnenrolled" v-bind:key="user.id">
@@ -227,12 +227,16 @@
     </div>
     <Termination ref="termination"/>
     <Missed ref="missed"/>
+    <Unenrolled ref="unenrolled"/>
+    <Lacking ref="lacking"/>
 </template>
 <script>
 import Missed from './Modals/Sub/Missed.vue';
+import Lacking from './Modals/Sub/Lacking.vue';
+import Unenrolled from './Modals/Sub/Unenrolled.vue';
 import Termination from './Modals/Sub/Termination.vue';
 export default {
-    components : { Termination, Missed },
+    components : { Termination, Missed, Unenrolled, Lacking },
     props: ['semester_year'],
     data(){
         return {
@@ -284,6 +288,16 @@ export default {
         openMissed(data){
             if(data.length > 0){
                 this.$refs.missed.show(data);
+            }
+        },
+        openUnenrolled(data){
+            if(data.length > 0){
+                this.$refs.unenrolled.show(data);
+            }
+        },
+        openLacking(data){
+            if(data.length > 0){
+                this.$refs.lacking.show(data);
             }
         }
     }

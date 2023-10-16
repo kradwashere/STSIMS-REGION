@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="showModal" title="Missed Enrollment" :hide-footer="(viewScholar) ? false : true " style="--vz-modal-width: 700px;" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered>    
+    <b-modal v-model="showModal" title="Lacking Grades" :hide-footer="(viewScholar) ? false : true " style="--vz-modal-width: 700px;" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered>    
         <template v-if="viewScholar == false">
             <input class="form-control mb-3" v-model="keyword" v-if="scholars != 0" type="text" placeholder="Search Scholar">
             <hr class="text-muted"/>
